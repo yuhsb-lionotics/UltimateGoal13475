@@ -40,6 +40,7 @@ import java.util.Iterator;
 import java.util.List;
 
     /*
+
         This sample illustrates how to use the Expansion Hub's Bulk-Read feature to speed up control cycle times.
         In this example there are 4 motors that need their encoder positions, and velocities read.
         The sample is written to work with one or two expansion hubs, with no assumption as to where the motors are located.
