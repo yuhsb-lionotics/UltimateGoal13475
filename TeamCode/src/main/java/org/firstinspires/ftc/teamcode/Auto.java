@@ -84,9 +84,9 @@ public class Auto extends LinearOpMode{
 
             //Determine new target position and pass it to motor controller
             newFRTarget = FL.getCurrentPosition() + (int) (FRin * COUNTS_PER_INCH);
-            newFLTarget = FL.getCurrentPosition() + (int) (FLin * COUNTS_PER_INCH);
-            newBRTarget = FL.getCurrentPosition() + (int) (BRin * COUNTS_PER_INCH);
-            newBLTarget = FL.getCurrentPosition() + (int) (BLin * COUNTS_PER_INCH);
+            newFLTarget = FR.getCurrentPosition() + (int) (FLin * COUNTS_PER_INCH);
+            newBRTarget = BL.getCurrentPosition() + (int) (BRin * COUNTS_PER_INCH);
+            newBLTarget = BR.getCurrentPosition() + (int) (BLin * COUNTS_PER_INCH);
 
             //Turn on RUN_TO_POSITION
             FR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -110,8 +110,8 @@ public class Auto extends LinearOpMode{
             while (opModeIsActive() &&
                     (FR.isBusy() && FL.isBusy() && BR.isBusy() && BL.isBusy())){
                 // Display it for the driver
-                telemetry.addData("Path1", "Running to %7d :%7d :%7d", newFLTarget, newFRTarget, newBLTarget, newBRTarget);
-                telemetry.addData("Path2", "Running at %7d :%7d :%7d",
+                telemetry.addData("Path1", "Running to %7d :%7d :%7d :%7d", newFLTarget, newFRTarget, newBLTarget, newBRTarget);
+                telemetry.addData("Path2", "Running at %7d :%7d :%7d :%7d",
                         FR.getCurrentPosition(),
                         FL.getCurrentPosition(),
                         BR.getCurrentPosition(),
