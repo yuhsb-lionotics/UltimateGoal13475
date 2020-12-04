@@ -18,11 +18,12 @@ public class TeleOp extends LinearOpMode {
     public void runOpMode(){
         setup();
         waitForStart();
+        while(opModeIsActive()){
         fl.setPower(.7 * -gamepad1.left_stick_y);
         bl.setPower(.7 * -gamepad1.left_stick_y);
         fr.setPower(.7 * -gamepad1.right_stick_y);
         br.setPower(.7 * -gamepad1.right_stick_y);
-    }
+    }}
 
     public void setup() {
         fl = hardwareMap.dcMotor.get("fl");
