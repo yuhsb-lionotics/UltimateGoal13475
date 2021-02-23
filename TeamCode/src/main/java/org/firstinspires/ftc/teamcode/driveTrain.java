@@ -64,5 +64,15 @@ public class driveTrain extends LinearOpMode {
         motorBackRight.setPower(-power);
         motorBackLeft.setPower(power);
     }
+    public void driveBackword(double power){
+        motorFrontRight.setPower(-power);
+        motorFrontLeft.setPower(-power);
+        motorBackLeft.setPower(-power);
+        motorBackRight.setPower(-power);
+
+    }
+
+
 }
+
 
