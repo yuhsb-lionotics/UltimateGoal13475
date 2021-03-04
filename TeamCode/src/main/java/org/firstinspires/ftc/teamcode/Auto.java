@@ -48,10 +48,10 @@ public class Auto extends LinearOpMode{
     }
 
     private void setup() {
-        FR = hardwareMap.get(DcMotor.class, "fr");
-        FL = hardwareMap.get(DcMotor.class, "fl");
-        BR = hardwareMap.get(DcMotor.class, "br");
-        BL = hardwareMap.get(DcMotor.class, "bl");
+        FR = hardwareMap.get(DcMotor.class, "Fr");
+        FL = hardwareMap.get(DcMotor.class, "Fl");
+        BR = hardwareMap.get(DcMotor.class, "Br");
+        BL = hardwareMap.get(DcMotor.class, "Bl");
 
         FR.setDirection(DcMotor.Direction.FORWARD);
         FL.setDirection(DcMotor.Direction.REVERSE);
