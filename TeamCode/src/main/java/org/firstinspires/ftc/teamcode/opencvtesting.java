@@ -160,7 +160,9 @@ public class opencvtesting extends LinearOpMode
                     BLUE, // The color the rectangle is drawn in
                     2); // Thickness of the rectangle lines
 
-            position = RingPosition.FOUR; // Record our analysis
+            position = RingPosition.FOUR;
+
+            // Record our analysis
             if(avg1 > FOUR_RING_THRESHOLD){
                 position = RingPosition.FOUR;
             }else if (avg1 > ONE_RING_THRESHOLD){
