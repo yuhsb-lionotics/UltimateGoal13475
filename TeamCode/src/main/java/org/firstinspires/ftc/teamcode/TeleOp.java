@@ -1,20 +1,15 @@
 package org.firstinspires.ftc.teamcode;
 
-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.hardware.DcMotor;
-
 
 @com.qualcomm.robotcore.eventloop.opmode.TeleOp(name="Manual")
-public class TeleOp extends LinearOpMode {
+public class TeleOp extends DriveTrain {
 
-    //Written by Emmett. I don't know what your DriveTrain class is supposed to do, so you might
-    //want to delete the code I wrote and replace it with something relying on DriveTrain.
-
+ /*
     private DcMotor fl = null;
     private DcMotor bl = null;
     private DcMotor br = null;
     private DcMotor fr = null;
-
+*/
     @Override
     public void runOpMode(){
         setup();
@@ -22,7 +17,11 @@ public class TeleOp extends LinearOpMode {
         telemetry.addData("Status:", "Ready");
         telemetry.addData("opModeIsActive: ",opModeIsActive());
         telemetry.update();
-        while(opModeIsActive()){
+        telemetry.addData("opmodeisacttive",opModeIsActive());
+        telemetry.update();
+
+
+        while (opModeIsActive()) {
             telemetry.addData("stick",gamepad1.left_stick_x);
             telemetry.addData("stick of other:", gamepad2.left_stick_x);
             fl.setPower(.7 * -gamepad1.left_stick_y);
@@ -37,6 +36,7 @@ public class TeleOp extends LinearOpMode {
     }
 
     public void setup() {
+        /*
         fr = hardwareMap.get(DcMotor.class, "Fr");
         fl = hardwareMap.get(DcMotor.class, "Fl");
         br = hardwareMap.get(DcMotor.class, "Br");
@@ -46,6 +46,8 @@ public class TeleOp extends LinearOpMode {
         fl.setDirection(DcMotor.Direction.REVERSE);
         br.setDirection(DcMotor.Direction.FORWARD);
         bl.setDirection(DcMotor.Direction.REVERSE);
+
+         */
 
     }
 }
