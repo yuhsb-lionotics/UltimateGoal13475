@@ -29,19 +29,15 @@ public class Auto extends DriveTrain {
         setup();
         waitForStart();
         runtime.reset();
-        while (opModeIsActive()) {
-            encoderDrive(0.6, 10, 10, 10, 10, 10);
-            requestOpModeStop();
-            //requestOpModeStop();
+        encoderDrive(0.6, 10, 10, 10, 10, 10);
+        //requestOpModeStop();
 
-            // for moving wobble goal:
-            encoderDrive(0.6, INCHES_FROM_GOAL, INCHES_FROM_GOAL, INCHES_FROM_GOAL, INCHES_FROM_GOAL, 10);
+        // for moving wobble goal:
+        encoderDrive(0.6, INCHES_FROM_GOAL, INCHES_FROM_GOAL, INCHES_FROM_GOAL, INCHES_FROM_GOAL, 10);
 
-            // move back to park:
-            encoderDrive(0.6, 12, 12, 12, 12, 10); //12 inches is just a guess, make adjustments if necessary
+        // move back to park:
+        encoderDrive(0.6, 12, 12, 12, 12, 10); //12 inches is just a guess, make adjustments if necessary
 
-
-        }
     }
 
 

@@ -71,9 +71,6 @@ public class DriveTrain extends LinearOpMode {
     public void driveForward(double power) {
         drive(power, power);
     }
-    public void strafeRight(double power) {
-        drive(-power, power);
-    }
 
 
     public void tankControl(double maxPower) { // 0 < maxPower <= 1
@@ -81,13 +78,13 @@ public class DriveTrain extends LinearOpMode {
         double rightPower = -gamepad1.right_stick_y * maxPower;
         drive(leftPower,rightPower);
     }
-    public void encoderStrafe(double maxPower, //0 <= maxPower <= 1
-                              double forwardLeftInches, double forwardRightInches, // + or -
-                              double timeoutS) {
-        encoderDrive(maxPower, forwardLeftInches, forwardRightInches, forwardRightInches, forwardLeftInches, timeoutS);
+    public void encoderMove(double maxPower, //0 <= maxPower <= 1
+                            double leftInches, double rightInches, // + or -
+                            double timeoutS) {
+        encoderDrive(maxPower, rightInches, leftInches, rightInches, leftInches, timeoutS);
     }
     public void encoderDriveForward(double power, double inches, double timeoutS) {
-        encoderStrafe(power, inches/Math.sqrt(2), inches/Math.sqrt(2), timeoutS);
+        encoderMove(power, inches, inches, timeoutS);
     }
 
     //Set each motor to drive a certain distance.
