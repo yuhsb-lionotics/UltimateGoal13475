@@ -5,7 +5,6 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
-import com.qualcomm.robotcore.util.Range;
 
 public class DriveTrain extends LinearOpMode {
     protected DcMotor fl, bl, fr, br;
@@ -59,33 +58,23 @@ public class DriveTrain extends LinearOpMode {
         br.setPower(-power);
     }
 
-    public void strafe(double forwardLeftPower, double forwardRightPower) {
-        fl.setPower(forwardRightPower);
-        bl.setPower(forwardLeftPower);
-        fr.setPower(forwardLeftPower);
-        br.setPower(forwardRightPower);
+    public void drive(double leftPower, double rightPower) {
+        fl.setPower(leftPower);
+        bl.setPower(leftPower);
+        fr.setPower(rightPower);
+        br.setPower(rightPower);
     }
     public void driveForward(double power) {
-        strafe(power, power);
+        drive(power, power);
     }
     public void strafeRight(double power) {
-        strafe(-power, power);
+        drive(-power, power);
     }
 
     public void tankControl(double maxPower) { // 0 < maxPower <= 1
         double leftPower = -gamepad1.left_stick_y * maxPower;
         double rightPower = -gamepad1.right_stick_y * maxPower;
-        double strafePower = (gamepad1.right_trigger - gamepad1.left_trigger) * maxPower; //positive is to the right
-
-        double strafePowerLimit = Math.min(1 - Math.abs(rightPower) , 1 - Math.abs(leftPower));
-        strafePower = Range.clip(strafePower, -strafePowerLimit, strafePowerLimit);
-
-        // This will set each motor to a power between -1 and +1 such that the equation for
-        // holonomic wheels works.
-        fl.setPower(leftPower  + strafePower);
-        bl.setPower(leftPower  - strafePower);
-        fr.setPower(rightPower - strafePower);
-        br.setPower(rightPower + strafePower);
+        drive(leftPower,rightPower);
     }
     public void encoderStrafe(double maxPower, //0 <= maxPower <= 1
                               double forwardLeftInches, double forwardRightInches, // + or -

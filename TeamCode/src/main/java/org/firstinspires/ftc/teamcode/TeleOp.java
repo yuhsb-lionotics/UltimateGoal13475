@@ -22,8 +22,8 @@ public class TeleOp extends DriveTrain {
 
 
         while (opModeIsActive()) {
-            telemetry.addData("stick",gamepad1.left_stick_x);
-            telemetry.addData("stick of other:", gamepad2.left_stick_x);
+            telemetry.addData("stick",gamepad1.left_stick_y);
+            telemetry.addData("stick of other:", gamepad2.left_stick_y);
             fl.setPower(.7 * -gamepad1.left_stick_y);
             bl.setPower(.7 * -gamepad1.left_stick_y);
             fr.setPower(.7 * -gamepad1.right_stick_y);
