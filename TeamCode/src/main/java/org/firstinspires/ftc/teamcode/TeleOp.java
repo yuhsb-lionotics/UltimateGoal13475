@@ -30,24 +30,34 @@ public class TeleOp extends DriveTrain {
             br.setPower(.7 * -gamepad1.right_stick_y);
             telemetry.update();
 
-    }
-
-
-    }
-
-    public void setup() {
-        /*
-        fr = hardwareMap.get(DcMotor.class, "Fr");
-        fl = hardwareMap.get(DcMotor.class, "Fl");
-        br = hardwareMap.get(DcMotor.class, "Br");
-        bl = hardwareMap.get(DcMotor.class, "Bl");
-
-        fr.setDirection(DcMotor.Direction.FORWARD);
-        fl.setDirection(DcMotor.Direction.REVERSE);
-        br.setDirection(DcMotor.Direction.FORWARD);
-        bl.setDirection(DcMotor.Direction.REVERSE);
-
-         */
+            if(gamepad1.a){ //low power
+                double power = 0; //amount of power to apply to launcher
+                launcher.setPower(power);
+            }
+//            else if(gamepad1.b){ //high power
+//                double power = 0; //amount of power to apply to
+//                launcher.setPower(power);l
+//            }
+            }
 
     }
-}
+
+
+    }
+
+//    public void setup() {
+//        /*
+//        fr = hardwareMap.get(DcMotor.class, "Fr");
+//        fl = hardwareMap.get(DcMotor.class, "Fl");
+//        br = hardwareMap.get(DcMotor.class, "Br");
+//        bl = hardwareMap.get(DcMotor.class, "Bl");
+//
+//        fr.setDirection(DcMotor.Direction.FORWARD);
+//        fl.setDirection(DcMotor.Direction.REVERSE);
+//        br.setDirection(DcMotor.Direction.FORWARD);
+//        bl.setDirection(DcMotor.Direction.REVERSE);
+//
+//         */
+//
+//    }
+//}

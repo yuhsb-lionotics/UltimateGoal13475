@@ -7,7 +7,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 public class DriveTrain extends LinearOpMode {
-    protected DcMotor fl, bl, fr, br;
+    protected DcMotor fl, bl, fr, br, launcher;
     private final ElapsedTime runtime = new ElapsedTime();
 
     public boolean getIsBlueAlliance() { return true; } //Set to false if red alliance
@@ -23,6 +23,8 @@ public class DriveTrain extends LinearOpMode {
 
     public void setup() {
         //Initialize motors and set directions
+        launcher = hardwareMap.dcMotor.get("Launcher");
+
         if (getIsBlueAlliance()) {
             fl = hardwareMap.dcMotor.get("Fl");
             bl = hardwareMap.dcMotor.get("Bl");
@@ -33,6 +35,7 @@ public class DriveTrain extends LinearOpMode {
             bl.setDirection(DcMotor.Direction.REVERSE);
             fr.setDirection(DcMotor.Direction.FORWARD);
             br.setDirection(DcMotor.Direction.FORWARD);
+
         } else { //Mirror image for red alliance
             fr = hardwareMap.dcMotor.get("Fl");
             br = hardwareMap.dcMotor.get("Bl");
@@ -49,6 +52,7 @@ public class DriveTrain extends LinearOpMode {
         bl.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         fr.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         br.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        launcher.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
     }
 
     public void rotateClockwise(double power) {
@@ -70,6 +74,7 @@ public class DriveTrain extends LinearOpMode {
     public void strafeRight(double power) {
         drive(-power, power);
     }
+
 
     public void tankControl(double maxPower) { // 0 < maxPower <= 1
         double leftPower = -gamepad1.left_stick_y * maxPower;
@@ -144,7 +149,6 @@ public class DriveTrain extends LinearOpMode {
             while (opModeIsActive() &&
                     (runtime.seconds() < timeoutS) &&
                     (fr.isBusy() && fl.isBusy() && bl.isBusy() && br.isBusy()) ) {
-
                 // Display it for the driver.
                 /* telemetry.addData("Path1", "Running to %7d :%7d :%7d :%7d :%7d",
                         newFRTarget, newFLTarget, newBLTarget, newFRTarget, newSMTarget);

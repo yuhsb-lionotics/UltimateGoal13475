@@ -22,6 +22,7 @@ public class Auto extends DriveTrain {
     static final double COUNTS_PER_INCH = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) /
             (WHEEL_DIAMETER_INCHES * 3.1415);
 
+    static final double INCHES_FROM_GOAL; //distance from starting position to "C" wobble goal dropoff
 
     @Override
     public void runOpMode() {
@@ -32,7 +33,17 @@ public class Auto extends DriveTrain {
             encoderDrive(0.6, 10, 10, 10, 10, 10);
             requestOpModeStop();
             //requestOpModeStop();
+
+            // for moving wobble goal:
+            encoderDrive(0.6, INCHES_FROM_GOAL, INCHES_FROM_GOAL, INCHES_FROM_GOAL, INCHES_FROM_GOAL, 10);
+
+            // move back to park:
+            encoderDrive(0.6, 12, 12, 12, 12, 10); //12 inches is just a guess, make adjustments if necessary
+
+
         }
+    }
+
 
         /* Let's quickly recap how to use encoder drive.
          *             !These are just motor values, not what encoder drive should be!
@@ -51,6 +62,6 @@ public class Auto extends DriveTrain {
 
         //CODE GOES HERE:
 
-    }
+
 
 }
