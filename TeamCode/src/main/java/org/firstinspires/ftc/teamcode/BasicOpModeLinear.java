@@ -63,7 +63,7 @@ public class BasicOpModeLinear extends DriveTrain {
 
         // Initialize the hardware variables. Note that the strings used here as parameters
         // to 'get' must correspond to the names assigned during the robot configuration
-        // step (using the FTC Robot Controller app on the phone).
+        // step (using the FTC Robot Con    troller app on the phone).
 
 
         // Most robots need the motor on one side to be reversed to drive forward
@@ -103,7 +103,7 @@ public class BasicOpModeLinear extends DriveTrain {
             fr.setPower(rightPower);
 
             // Show the elapsed game time and wheel power.
-            telemetry.addData("Status", "Run Time: " + runtime.toString());
+            telemetry.addData(  "Status", "Run Time: " + runtime.toString());
             telemetry.addData("Motors", "left (%.2f), right (%.2f)", leftPower, rightPower);
             telemetry.addData("drive",drive);
             telemetry.addData("turn", turn);

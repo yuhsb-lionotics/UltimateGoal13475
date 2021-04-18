@@ -177,8 +177,8 @@ public class DriveTrain extends LinearOpMode {
         }
     }
     //this is me to the best of my ability trying to rewrite the encoderDrive above but for the launcher, bare with me here
-    public void launcherEncoderDrive(power){
-        double moveInches; //the precise number of inches needed to be moved every time. Needs testing to approximate.
+    public void launcherEncoderDrive(int power){
+        double moveInches = 1; //the precise number of inches needed to be moved every time. Needs testing to approximate.
 
         int newLauncherTarget = launcher.getCurrentPosition() + (int) (moveInches * COUNTS_PER_INCH);
         if(opModeIsActive()){
@@ -188,7 +188,7 @@ public class DriveTrain extends LinearOpMode {
             runtime.reset();
             launcher.setPower(power);
 
-            telemetry.addData("Encoder Drive", "Finished in %.2f s/%f", runtime.seconds(), timeoutS);
+            telemetry.addData("Encoder Drive", "Finished in %.2f s/%f", runtime.seconds());
             telemetry.update();
 
             launcher.setPower(0);
