@@ -18,18 +18,9 @@ public class GoForward extends DriveTrain {
         telemetry.addData("Status:", "Running");
         telemetry.update();
         //encoderDrive(0.7,42,10, 10, 10, 2);
-        while (opModeIsActive()) {
-            telemetry.addData("stick",gamepad1.left_stick_x);
-            telemetry.addData("stick of other:", gamepad2.left_stick_x);
-            telemetry.update();
-            fl.setPower(.7 * -gamepad1.left_stick_y);
-            bl.setPower(.7 * -gamepad1.left_stick_y);
-            fr.setPower(.7 * -gamepad1.right_stick_y);
-            br.setPower(.7 * -gamepad1.right_stick_y);
+        conveyerDrive(1,0.8);
 
-        }
-
-        //encoderDrive(1,1,1,1,16*Math.PI, 15);
+   //encoderDrive(1,1,1,1,16*Math.PI, 15);
 
     }
 }

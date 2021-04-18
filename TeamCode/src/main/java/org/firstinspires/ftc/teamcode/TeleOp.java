@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode;
 
+// DONT USE THIS CODE! USE BasicOpModeLinear
+
 
 @com.qualcomm.robotcore.eventloop.opmode.TeleOp(name="Manual")
 public class TeleOp extends DriveTrain {

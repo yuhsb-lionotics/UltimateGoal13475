@@ -7,13 +7,13 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 public class DriveTrain extends LinearOpMode {
-    protected DcMotor fl, bl, fr, br, launcher;
+    protected DcMotor fl, bl, fr, br, launcher, conveyer;
     private final ElapsedTime runtime = new ElapsedTime();
 
     public boolean getIsBlueAlliance() { return true; } //Set to false if red alliance
 
     private static final double COUNTS_PER_MOTOR_REV = 1680;    // eg: TETRIX Motor Encoder
-    private static final double DRIVE_GEAR_REDUCTION = 1.0;     // This is < 1.0 if geared UP
+    private static final double DRIVE_GEAR_REDUCTION = 0.5;     // This is < 1.0 if geared UP
     private static final double WHEEL_DIAMETER_INCHES = 4.0;     // For figuring circumference
     private static final double COUNTS_PER_INCH = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) /
             (WHEEL_DIAMETER_INCHES * Math.PI);
@@ -23,7 +23,9 @@ public class DriveTrain extends LinearOpMode {
 
     public void setup() {
         //Initialize motors and set directions
-        launcher = hardwareMap.dcMotor.get("Launcher");
+        launcher = hardwareMap.dcMotor.get("launcher");
+
+        conveyer= hardwareMap.dcMotor.get("conveyer");
 
         if (getIsBlueAlliance()) {
             fl = hardwareMap.dcMotor.get("Fl");
@@ -52,7 +54,8 @@ public class DriveTrain extends LinearOpMode {
         bl.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         fr.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         br.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        launcher.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        conveyer.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+
     }
 
     public void rotateClockwise(double power) {
@@ -174,22 +177,27 @@ public class DriveTrain extends LinearOpMode {
         }
     }
     //this is me to the best of my ability trying to rewrite the encoderDrive above but for the launcher, bare with me here
-    public void launcherEncoderDrive(int power){
-        double moveInches = 1; //the precise number of inches needed to be moved every time. Needs testing to approximate.
 
-        int newLauncherTarget = launcher.getCurrentPosition() + (int) (moveInches * COUNTS_PER_INCH);
+    public void setLauncherPower(double power){
+        launcher.setPower(-power);
+    }
+
+    public void conveyerDrive(double moveInches ,double power){
+            //the precise number of inches needed to be moved every time. Needs testing to approximate.
+
+        int newConveyerTarget = conveyer.getCurrentPosition() + (int) (moveInches * COUNTS_PER_INCH);
         if(opModeIsActive()){
-            launcher.setTargetPosition(newLauncherTarget);
-            launcher.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            conveyer.setTargetPosition(newConveyerTarget);
+            conveyer.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
             runtime.reset();
-            launcher.setPower(power);
+            conveyer.setPower(power);
 
-            telemetry.addData("Encoder Drive", "Finished in %.2f s/%f", runtime.seconds());
+            telemetry.addData("Conveyor Drive", "Finished in %.2f s/%f", runtime.seconds());
             telemetry.update();
 
-            launcher.setPower(0);
-            launcher.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            conveyer.setPower(0);
+            conveyer.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         }
 
     }
