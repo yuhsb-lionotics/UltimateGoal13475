@@ -18,8 +18,10 @@ public class GoForward extends DriveTrain {
         telemetry.addData("Status:", "Running");
         telemetry.update();
         //encoderDrive(0.7,42,10, 10, 10, 2);
-        conveyerDrive(-25,0.9);
-
+        //conveyerDrive(-25,0.9);
+        driveForward(20);
+        sleep(2000);
+        driveForward(0);
    //encoderDrive(1,1,1,1,16*Math.PI, 15);
 
     }

@@ -16,7 +16,7 @@ public class TeleOp extends DriveTrain {
     public void runOpMode(){
         setup();
         waitForStart();
-        telemetry.addData("Status:", "Ready");
+        telemetry.addData("Status:", "DONT use this opmode. Use BasicOpModeLinear");
         telemetry.addData("opModeIsActive: ",opModeIsActive());
         telemetry.update();
         telemetry.addData("opmodeisacttive",opModeIsActive());

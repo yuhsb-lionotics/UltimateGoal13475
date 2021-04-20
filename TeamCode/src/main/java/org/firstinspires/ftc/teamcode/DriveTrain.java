@@ -4,6 +4,7 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 public class DriveTrain extends LinearOpMode {
@@ -33,10 +34,11 @@ public class DriveTrain extends LinearOpMode {
             fr = hardwareMap.dcMotor.get("Fr");
             br = hardwareMap.dcMotor.get("Br");
 
-            fl.setDirection(DcMotor.Direction.REVERSE);
-            bl.setDirection(DcMotor.Direction.REVERSE);
-            fr.setDirection(DcMotor.Direction.FORWARD);
-            br.setDirection(DcMotor.Direction.FORWARD);
+            fl.setDirection(DcMotor.Direction.FORWARD);
+            bl.setDirection(DcMotor.Direction.FORWARD);
+            fr.setDirection(DcMotor.Direction.REVERSE);
+            br.setDirection(DcMotor.Direction.REVERSE);
+
 
         } else { //Mirror image for red alliance
             fr = hardwareMap.dcMotor.get("Fl");
@@ -49,6 +51,10 @@ public class DriveTrain extends LinearOpMode {
             fl.setDirection(DcMotor.Direction.FORWARD);
             bl.setDirection(DcMotor.Direction.FORWARD);
         }
+
+
+
+
         //Set motors to brake whenever they are stopped
         fl.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         bl.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
