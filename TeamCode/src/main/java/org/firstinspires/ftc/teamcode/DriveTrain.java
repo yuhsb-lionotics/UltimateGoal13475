@@ -25,7 +25,7 @@ public class DriveTrain extends LinearOpMode {
         //Initialize motors and set directions
         launcher = hardwareMap.dcMotor.get("launcher");
 
-        conveyer= hardwareMap.dcMotor.get("conveyer");
+        conveyer = hardwareMap.dcMotor.get("conveyer");
 
         if (getIsBlueAlliance()) {
             fl = hardwareMap.dcMotor.get("Fl");
@@ -128,7 +128,7 @@ public class DriveTrain extends LinearOpMode {
             //Power for each wheel is proportional to the maximum power and distance travelled
             double maxInches = Math.max( Math.max(Math.abs(frInches), Math.abs(flInches)) ,
                     Math.max(Math.abs(brInches), Math.abs(blInches)) );
-            double powerFR = maxPower * frInches / maxInches;
+            double powerFR = maxPower * frInches / maxInches * 1.5 ;
             double powerFL = maxPower * flInches / maxInches;
             double powerBR = maxPower * brInches / maxInches;
             double powerBL = maxPower * blInches / maxInches;
@@ -182,23 +182,22 @@ public class DriveTrain extends LinearOpMode {
         launcher.setPower(-power);
     }
 
-    public void conveyerDrive(double moveInches ,double power){
+    public void conveyerDrive(double moveInches , double power) {
             //the precise number of inches needed to be moved every time. Needs testing to approximate.
 
-        int newConveyerTarget = conveyer.getCurrentPosition() + (int) (moveInches * COUNTS_PER_INCH);
-        if(opModeIsActive()){
-            conveyer.setTargetPosition(newConveyerTarget);
-            conveyer.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        int newConveyerTarget = (int) (conveyer.getCurrentPosition() + COUNTS_PER_INCH * moveInches);
+        telemetry.addData("conveyerTarget", newConveyerTarget);
+        telemetry.update();
+        conveyer.setTargetPosition(newConveyerTarget);
+        conveyer.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
-            runtime.reset();
-            conveyer.setPower(power);
-
-            telemetry.addData("Conveyor Drive", "Finished in %.2f s/%f", runtime.seconds());
-            telemetry.update();
-
-            conveyer.setPower(0);
-            conveyer.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        runtime.reset();
+        conveyer.setPower(power);
+        while(opModeIsActive() && conveyer.isBusy()) {
+            sleep(10);
         }
+        conveyer.setPower(0);
+        conveyer.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
     }
 

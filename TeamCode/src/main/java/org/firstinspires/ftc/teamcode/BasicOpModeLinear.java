@@ -55,10 +55,10 @@ public class BasicOpModeLinear extends DriveTrain {
 
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
-
+    boolean launcherRunning = false;
     @Override
     public void runOpMode() {
-        telemetry.addData("S tatus", "Initialized");
+        telemetry.addData("Status", "Initialized");
         telemetry.update();
 
         // Initialize the hardware variables. Note that the strings used here as parameters
@@ -85,28 +85,30 @@ public class BasicOpModeLinear extends DriveTrain {
 
             // POV Mode uses left stick to go forward, and right stick to turn.
             // - This uses basic math to combine motions and is easier to drive straight.
-            double drive = -gamepad1.left_stick_y*0.6;
-            double turn  =  gamepad1.right_stick_x*0.6;
+            //double drive = -gamepad1.left_stick_y*0.6;
+            //double turn  =  gamepad1.right_stick_x*0.6;
 
-            leftPower    = Range.clip(drive + turn, -1.0, 1.0) ;
-            rightPower   = Range.clip(drive - turn, -1.0, 1.0) ;
+           // leftPower    = Range.clip(drive + turn, -1.0, 1.0) ;
+            //rightPower   = Range.clip(drive - turn, -1.0, 1.0) ;
 
             // Tank Mode uses one stick to control each wheel.
             // - This requires no math, but it is hard to drive forward slowly and keep straight.
-            // leftPower  = -gamepad1.left_stick_y ;
-            // rightPower = -gamepad1.right_stick_y ;
+            leftPower  = -0.7 * gamepad1.left_stick_y ;
+            rightPower = -0.7 * gamepad1.right_stick_y ;
 
             // Send calculated power to wheels
-            fl.setPower(leftPower);
-            bl.setPower(leftPower);
-            br.setPower(rightPower);
-            fr.setPower(rightPower);
+            fl.setPower(-leftPower);
+            bl.setPower(-leftPower);
+            br.setPower(-rightPower);
+            fr.setPower(-rightPower);
+            setLauncherPower(1);
+            if (gamepad1.right_bumper || gamepad1.left_bumper){
+                conveyerDrive(-25,0.9);
+            }
 
             // Show the elapsed game time and wheel power.
             telemetry.addData(  "Status", "Run Time: " + runtime.toString());
             telemetry.addData("Motors", "left (%.2f), right (%.2f)", leftPower, rightPower);
-            telemetry.addData("drive",drive);
-            telemetry.addData("turn", turn);
             telemetry.update();
         }
     }

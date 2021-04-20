@@ -26,11 +26,12 @@ public class TeleOp extends DriveTrain {
         while (opModeIsActive()) {
             telemetry.addData("stick",gamepad1.left_stick_y);
             telemetry.addData("stick of other:", gamepad2.left_stick_y);
-            fl.setPower(.7 * -gamepad1.left_stick_y);
-            bl.setPower(.7 * -gamepad1.left_stick_y);
-            fr.setPower(.7 * -gamepad1.right_stick_y);
-            br.setPower(.7 * -gamepad1.right_stick_y);
+            fl.setPower(.6 * -gamepad1.left_stick_y);
+            bl.setPower(.6 * -gamepad1.left_stick_y);
+            fr.setPower(.6 * -gamepad1.right_stick_y);
+            br.setPower(.6 * -gamepad1.right_stick_y);
             telemetry.update();
+
 
             if(gamepad1.a){ //low power
                 double power = 0; //amount of power to apply to launcher
