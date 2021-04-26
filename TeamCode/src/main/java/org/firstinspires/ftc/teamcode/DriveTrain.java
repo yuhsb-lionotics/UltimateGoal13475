@@ -4,11 +4,10 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 public class DriveTrain extends LinearOpMode {
-    protected DcMotor fl, bl, fr, br, launcher, conveyer;
+    protected DcMotor fl, bl, fr, br, launcher, conveyor;
     private final ElapsedTime runtime = new ElapsedTime();
 
     public boolean getIsBlueAlliance() { return true; } //Set to false if red alliance
@@ -26,7 +25,7 @@ public class DriveTrain extends LinearOpMode {
         //Initialize motors and set directions
         launcher = hardwareMap.dcMotor.get("launcher");
 
-        conveyer = hardwareMap.dcMotor.get("conveyer");
+        conveyor = hardwareMap.dcMotor.get("conveyer");
 
         if (getIsBlueAlliance()) {
             fl = hardwareMap.dcMotor.get("Fl");
@@ -60,7 +59,7 @@ public class DriveTrain extends LinearOpMode {
         bl.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         fr.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         br.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        conveyer.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        conveyor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
     }
 
@@ -134,11 +133,16 @@ public class DriveTrain extends LinearOpMode {
             //Power for each wheel is proportional to the maximum power and distance travelled
             double maxInches = Math.max( Math.max(Math.abs(frInches), Math.abs(flInches)) ,
                     Math.max(Math.abs(brInches), Math.abs(blInches)) );
-            double powerFR = maxPower * frInches / maxInches * 1.5 ;
+            double powerFR = maxPower * frInches / maxInches;
             double powerFL = maxPower * flInches / maxInches;
             double powerBR = maxPower * brInches / maxInches;
             double powerBL = maxPower * blInches / maxInches;
 
+            telemetry.addData("EncoderDrivePowerFR", powerFR);
+            telemetry.addData("EncoderDrivePowerFL", powerFL);
+            telemetry.addData("EncoderDrivePowerBR", powerBR);
+            telemetry.addData("EncoderDrivePowerBL", powerBL);
+            telemetry.update();
             // reset the timeout time and start motion.
             runtime.reset();
             fr.setPower(Math.abs(powerFR));
@@ -191,19 +195,19 @@ public class DriveTrain extends LinearOpMode {
     public void conveyerDrive(double moveInches , double power) {
             //the precise number of inches needed to be moved every time. Needs testing to approximate.
 
-        int newConveyerTarget = (int) (conveyer.getCurrentPosition() + COUNTS_PER_INCH * moveInches);
+        int newConveyerTarget = (int) (conveyor.getCurrentPosition() + COUNTS_PER_INCH * moveInches);
         telemetry.addData("conveyerTarget", newConveyerTarget);
         telemetry.update();
-        conveyer.setTargetPosition(newConveyerTarget);
-        conveyer.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        conveyor.setTargetPosition(newConveyerTarget);
+        conveyor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
         runtime.reset();
-        conveyer.setPower(power);
-        while(opModeIsActive() && conveyer.isBusy()) {
+        conveyor.setPower(power);
+        while(opModeIsActive() && conveyor.isBusy()) {
             sleep(10);
         }
-        conveyer.setPower(0);
-        conveyer.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        conveyor.setPower(0);
+        conveyor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
     }
 

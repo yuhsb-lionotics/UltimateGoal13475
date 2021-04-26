@@ -19,8 +19,10 @@ public class GoForward extends DriveTrain {
         telemetry.update();
         //encoderDrive(0.7,42,10, 10, 10, 2);
         //conveyerDrive(-25,0.9);
-        driveForward(20);
+        driveForward(.4);
         sleep(2000);
+        driveForward(-.4);
+        sleep(700);
         driveForward(0);
    //encoderDrive(1,1,1,1,16*Math.PI, 15);
 
