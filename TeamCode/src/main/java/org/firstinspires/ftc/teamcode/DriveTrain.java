@@ -118,10 +118,7 @@ public class DriveTrain extends LinearOpMode {
             newBLTarget = bl.getCurrentPosition()     + (int) (blInches * COUNTS_PER_INCH);
             newBRTarget = br.getCurrentPosition()     + (int) (brInches * COUNTS_PER_INCH);
 
-            fr.setTargetPosition(newFRTarget);
-            fl.setTargetPosition(newFLTarget);
-            bl.setTargetPosition(newBLTarget);
-            br.setTargetPosition(newBRTarget);
+
 
             // Turn On RUN_TO_POSITION
             fr.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -150,6 +147,11 @@ public class DriveTrain extends LinearOpMode {
             bl.setPower(Math.abs(powerBL));
             br.setPower(Math.abs(powerBR));
 
+
+            fr.setTargetPosition(newFRTarget);
+            fl.setTargetPosition(newFLTarget);
+            bl.setTargetPosition(newBLTarget);
+            br.setTargetPosition(newBRTarget);
             // keep looping while we are still active, and there is time left, and both motors are running.
             // Note: We use (isBusy() && isBusy()) in the loop test, which means that when EITHER/ANY motor hits
             // its target position, the motion will stop.  This is "safer" in the event that the robot will
@@ -186,6 +188,7 @@ public class DriveTrain extends LinearOpMode {
             br.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         }
     }
+
     //this is me to the best of my ability trying to rewrite the encoderDrive above but for the launcher, bare with me here
 
     public void setLauncherPower(double power){

@@ -30,9 +30,8 @@ public class Auto extends DriveTrain {
 
         // for moving wobble goal:
         encoderDrive(0.4, INCHES_FROM_GOAL, INCHES_FROM_GOAL, INCHES_FROM_GOAL, INCHES_FROM_GOAL, 10);
-
         // move back to park:
-   encoderDrive(0.4, -12, -12, -12, -12, 10); //12 inches is just a guess, make adjustments if necessary
+   //encoderDrive(0.4, -12, -12, -12, -12, 10); //12 inches is just a guess, make adjustments if necessary
 
     }
 
