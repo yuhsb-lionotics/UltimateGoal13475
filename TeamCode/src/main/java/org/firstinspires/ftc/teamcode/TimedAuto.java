@@ -25,8 +25,8 @@ public class TimedAuto extends DriveTrain {
         runtime.reset();
 
         // for moving wobble goal:
-        driveForward(0.4);
-        sleep(5400);
+        driveForward(0.8);
+        sleep(1400);
         driveForward(-0.4);
         sleep(2000);
         driveForward(0);

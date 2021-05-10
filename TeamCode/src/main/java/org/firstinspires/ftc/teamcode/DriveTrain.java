@@ -12,7 +12,7 @@ public class DriveTrain extends LinearOpMode {
 
     public boolean getIsBlueAlliance() { return true; } //Set to false if red alliance
 
-    private static final double COUNTS_PER_MOTOR_REV = 1680;    // eg: TETRIX Motor Encoder
+    private static final double COUNTS_PER_MOTOR_REV = 420;    // eg: NEVEREST60 Motor Encoder
     private static final double DRIVE_GEAR_REDUCTION = 0.5;     // This is < 1.0 if geared UP
     private static final double WHEEL_DIAMETER_INCHES = 4.0;     // For figuring circumference
     private static final double COUNTS_PER_INCH = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) /
@@ -120,11 +120,7 @@ public class DriveTrain extends LinearOpMode {
 
 
 
-            // Turn On RUN_TO_POSITION
-            fr.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            fl.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            bl.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            br.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
 
             //Determine wheel powers
             //Power for each wheel is proportional to the maximum power and distance travelled
@@ -141,17 +137,31 @@ public class DriveTrain extends LinearOpMode {
             telemetry.addData("EncoderDrivePowerBL", powerBL);
             telemetry.update();
             // reset the timeout time and start motion.
-            runtime.reset();
-            fr.setPower(Math.abs(powerFR));
-            fl.setPower(Math.abs(powerFL));
-            bl.setPower(Math.abs(powerBL));
-            br.setPower(Math.abs(powerBR));
 
 
             fr.setTargetPosition(newFRTarget);
             fl.setTargetPosition(newFLTarget);
             bl.setTargetPosition(newBLTarget);
             br.setTargetPosition(newBRTarget);
+            // Turn On RUN_TO_POSITION
+            fr.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            fl.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            bl.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            br.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            runtime.reset();
+            fr.setPower(Math.abs(powerFR));
+            fl.setPower(Math.abs(powerFL));
+            bl.setPower(Math.abs(powerBL));
+            br.setPower(Math.abs(powerBR));
+
+            // Display it for the driver.
+
+            telemetry.addData("fr ",fr.isBusy());
+            telemetry.addData("fl ",fl.isBusy());
+            telemetry.addData("br ",br.isBusy());
+            telemetry.addData("bl ",bl.isBusy());
+
+            telemetry.update();
             // keep looping while we are still active, and there is time left, and both motors are running.
             // Note: We use (isBusy() && isBusy()) in the loop test, which means that when EITHER/ANY motor hits
             // its target position, the motion will stop.  This is "safer" in the event that the robot will
@@ -160,16 +170,14 @@ public class DriveTrain extends LinearOpMode {
             // onto the next step, use (isBusy() || isBusy()) in the loop test.
             while (opModeIsActive() &&
                     (runtime.seconds() < timeoutS) &&
-                    (fr.isBusy() && fl.isBusy() && bl.isBusy() && br.isBusy()) ) {
+                    (fr.isBusy() || fl.isBusy() || bl.isBusy() || br.isBusy())){
                 // Display it for the driver.
-                /* telemetry.addData("Path1", "Running to %7d :%7d :%7d :%7d :%7d",
-                        newFRTarget, newFLTarget, newBLTarget, newFRTarget, newSMTarget);
-                telemetry.addData("Path2", "Running at %7d :%7d :%7d :%7d :%7d",
-                        motorFR.getCurrentPosition(),
-                        motorFL.getCurrentPosition(),
-                        motorBL.getCurrentPosition(),
-                        motorBR.getCurrentPosition(),
-                        strafeMotor.getCurrentPosition()); */
+                telemetry.addData("fr ",fr.isBusy());
+                telemetry.addData("fl ",fl.isBusy());
+                telemetry.addData("br ",br.isBusy());
+                telemetry.addData("bl ",bl.isBusy());
+
+                telemetry.update();
             }
             //Display the time elapsed
             telemetry.addData("Encoder Drive", "Finished in %.2f s/%f", runtime.seconds(), timeoutS);
