@@ -16,15 +16,15 @@ public class DriveTrain extends LinearOpMode {
     private static final double DRIVE_GEAR_REDUCTION = 0.5;     // This is < 1.0 if geared UP
     private static final double WHEEL_DIAMETER_INCHES = 4.0;     // For figuring circumference
     private static final double COUNTS_PER_INCH = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) /
-            (WHEEL_DIAMETER_INCHES * Math.PI);
+            (WHEEL_DIAMETER_INCHES * 3.14);
 
     @Override
-    public void runOpMode() { }
+    public void runOpMode() {
+ }
 
     public void setup() {
         //Initialize motors and set directions
         launcher = hardwareMap.dcMotor.get("launcher");
-
         conveyor = hardwareMap.dcMotor.get("conveyer");
 
         if (getIsBlueAlliance()) {
@@ -63,12 +63,6 @@ public class DriveTrain extends LinearOpMode {
 
     }
 
-    public void rotateClockwise(double power) {
-        fl.setPower(power);
-        bl.setPower(power);
-        fr.setPower(-power);
-        br.setPower(-power);
-    }
 
     public void drive(double leftPower, double rightPower) {
         fl.setPower(leftPower);
@@ -81,19 +75,7 @@ public class DriveTrain extends LinearOpMode {
     }
 
 
-    public void tankControl(double maxPower) { // 0 < maxPower <= 1
-        double leftPower = -gamepad1.left_stick_y * maxPower;
-        double rightPower = -gamepad1.right_stick_y * maxPower;
-        drive(leftPower,rightPower);
-    }
-    public void encoderMove(double maxPower, //0 <= maxPower <= 1
-                            double leftInches, double rightInches, // + or -
-                            double timeoutS) {
-        encoderDrive(maxPower, rightInches, leftInches, rightInches, leftInches, timeoutS);
-    }
-    public void encoderDriveForward(double power, double inches, double timeoutS) {
-        encoderMove(power, inches, inches, timeoutS);
-    }
+
 
     //Set each motor to drive a certain distance.
     //maxPower is the greatest absolute value of the power for any of the motors.
@@ -117,6 +99,11 @@ public class DriveTrain extends LinearOpMode {
             newFLTarget = fl.getCurrentPosition()     + (int) (flInches * COUNTS_PER_INCH);
             newBLTarget = bl.getCurrentPosition()     + (int) (blInches * COUNTS_PER_INCH);
             newBRTarget = br.getCurrentPosition()     + (int) (brInches * COUNTS_PER_INCH);
+
+
+
+
+
 
 
 
@@ -149,10 +136,10 @@ public class DriveTrain extends LinearOpMode {
             bl.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             br.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             runtime.reset();
-            fr.setPower(Math.abs(powerFR));
-            fl.setPower(Math.abs(powerFL));
-            bl.setPower(Math.abs(powerBL));
-            br.setPower(Math.abs(powerBR));
+            fr.setPower(Math.abs(maxPower));
+            fl.setPower(Math.abs(maxPower));
+            bl.setPower(Math.abs(maxPower));
+            br.setPower(Math.abs(maxPower));
 
             // Display it for the driver.
 
@@ -170,7 +157,7 @@ public class DriveTrain extends LinearOpMode {
             // onto the next step, use (isBusy() || isBusy()) in the loop test.
             while (opModeIsActive() &&
                     (runtime.seconds() < timeoutS) &&
-                    (fr.isBusy() || fl.isBusy() || bl.isBusy() || br.isBusy())){
+                    (fr.isBusy() && fl.isBusy() && bl.isBusy() && br.isBusy())){
                 // Display it for the driver.
                 telemetry.addData("fr ",fr.isBusy());
                 telemetry.addData("fl ",fl.isBusy());
