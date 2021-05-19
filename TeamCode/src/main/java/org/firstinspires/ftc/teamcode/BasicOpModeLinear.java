@@ -29,12 +29,9 @@
 
 package org.firstinspires.ftc.teamcode;
 
-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
-import com.qualcomm.robotcore.util.Range;
 
 
 /**
@@ -54,8 +51,11 @@ import com.qualcomm.robotcore.util.Range;
 public class BasicOpModeLinear extends DriveTrain {
 
     // Declare OpMode members.
-    private ElapsedTime runtime = new ElapsedTime();
-    boolean launcherRunning = false;
+    private final ElapsedTime runtime = new ElapsedTime();
+    private static final double conveyorDiameter = 2.5;
+    private static final double conveyorCountsPerInch = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) /
+            (conveyorDiameter * Math.PI);
+
     @Override
     public void runOpMode() {
         telemetry.addData("Status", "Initialized");
@@ -97,13 +97,14 @@ public class BasicOpModeLinear extends DriveTrain {
             rightPower = -0.7 * gamepad1.right_stick_y ;
 
             // Send calculated power to wheels
-            fl.setPower(-leftPower);
-            bl.setPower(-leftPower);
-            br.setPower(-rightPower);
-            fr.setPower(-rightPower);
+            forwardLeft.setPower(-leftPower);
+            backLeft.setPower(-leftPower);
+            backRight.setPower(-rightPower);
+            frontRight.setPower(-rightPower);
             setLauncherPower(1);
+
             if (gamepad1.right_bumper || gamepad1.left_bumper){
-                conveyerDrive(-25,0.9);
+                conveyorDrive(-25,0.9);
             }
 
             // Show the elapsed game time and wheel power.
@@ -111,5 +112,28 @@ public class BasicOpModeLinear extends DriveTrain {
             telemetry.addData("Motors", "left (%.2f), right (%.2f)", leftPower, rightPower);
             telemetry.update();
         }
+    }
+    public void setLauncherPower(double power){
+        launcher.setPower(-power);
+    }
+    public void conveyorDrive(double moveInches , double power) {
+        //the precise number of inches needed to be moved every time. Needs testing to approximate.
+
+        int newConveyorTarget = (int) (conveyor.getCurrentPosition() + conveyorCountsPerInch * moveInches);
+        telemetry.addData("conveyorTarget", newConveyorTarget);
+        telemetry.update();
+        conveyor.setTargetPosition(newConveyorTarget);
+        conveyor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+        runtime.reset();
+        conveyor.setPower(power);
+
+        while(opModeIsActive() && conveyor.isBusy()) {
+            sleep(10);
+        }
+
+        conveyor.setPower(0);
+        conveyor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
     }
 }

@@ -1,19 +1,19 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 @Autonomous(name="Auto", group="LinearOpMode")
-
 public class Auto extends DriveTrain {
 
-    private ElapsedTime runtime = new ElapsedTime();
+    private final ElapsedTime runtime = new ElapsedTime();
+    private static final double conveyorDiameter = 2.5;
+    private static final double conveyorCountsPerInch = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) /
+            (conveyorDiameter * Math.PI);
 
     //Needs adjusting. Just set for preliminary testing
-    static final double INCHES_FROM_GOAL = 2; //distance from starting  position to "C" wobble goal dropoff
+    static final double INCHES_FROM_GOAL = 64; //distance from starting  position to "C" wobble goal drop-off
 
     @Override
     public void runOpMode() {
@@ -30,6 +30,39 @@ public class Auto extends DriveTrain {
 
     }
 
+    @Override
+    public void setup() {
+        super.setup();
+        //Initialize motors and set directions
+        launcher = hardwareMap.dcMotor.get("launcher");
+        conveyor = hardwareMap.dcMotor.get("conveyor");
+
+    }
+
+    public void setLauncherPower(final double power) {
+        launcher.setPower(-power);
+    }
+    public void conveyorDrive(final double moveInches , final double power) {
+        //the precise number of inches needed to be moved every time. Needs testing to approximate.
+
+        int newConveyorTarget = (int) (conveyor.getCurrentPosition() + conveyorCountsPerInch * moveInches);
+
+        telemetry.addData("conveyorTarget", newConveyorTarget);
+        telemetry.update();
+        conveyor.setTargetPosition(newConveyorTarget);
+        conveyor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+        runtime.reset();
+        conveyor.setPower(power);
+
+        while(opModeIsActive() && conveyor.isBusy()) {
+            sleep(10);
+        }
+
+        conveyor.setPower(0);
+        conveyor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+    }
 
         /* Let's quickly recap how to use encoder drive.
          *             !These are just motor values, not what encoder drive should be!

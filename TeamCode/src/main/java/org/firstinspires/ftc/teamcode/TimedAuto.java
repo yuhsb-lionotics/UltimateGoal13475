@@ -6,11 +6,11 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-@Autonomous(name="TimedAuto", group="LinearOpMode")
+@Autonomous(name = "TimedAuto", group = "LinearOpMode")
 
 public class TimedAuto extends DriveTrain {
 
-    private ElapsedTime runtime = new ElapsedTime();
+    private final ElapsedTime runtime = new ElapsedTime();
 
     static final double COUNTS_PER_MOTOR_REV = 1680;    // eg: TETRIX Motor Encoder
     static final double DRIVE_GEAR_REDUCTION = 0.5;     // This is < 1.0 if geared UP

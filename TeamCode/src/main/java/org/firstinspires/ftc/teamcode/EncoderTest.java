@@ -21,29 +21,29 @@ public class EncoderTest extends DriveTrain {
         setup();
         waitForStart();
         try {
-            fr.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-            fr.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-            fr.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-            fr.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            frontRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            frontRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            frontRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            frontRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
-            int newFRTarget = fr.getCurrentPosition() + (int) (30.0 * COUNTS_PER_INCH);
-            int newFLTarget = fl.getCurrentPosition() + (int) (30.0 * COUNTS_PER_INCH);
-            int newBLTarget = bl.getCurrentPosition() + (int) (30.0 * COUNTS_PER_INCH);
-            int newBRTarget = br.getCurrentPosition() + (int) (30.0 * COUNTS_PER_INCH);
+            int newFRTarget = frontRight.getCurrentPosition() + (int) (30.0 * COUNTS_PER_INCH);
+            int newFLTarget = forwardLeft.getCurrentPosition() + (int) (30.0 * COUNTS_PER_INCH);
+            int newBLTarget = backLeft.getCurrentPosition() + (int) (30.0 * COUNTS_PER_INCH);
+            int newBRTarget = backRight.getCurrentPosition() + (int) (30.0 * COUNTS_PER_INCH);
 
-            fr.setTargetPosition(2000);
-            fl.setTargetPosition(2000);
-            bl.setTargetPosition(2000);
-            br.setTargetPosition(2000);
+            frontRight.setTargetPosition(2000);
+            forwardLeft.setTargetPosition(2000);
+            backLeft.setTargetPosition(2000);
+            backRight.setTargetPosition(2000);
             runtime.reset();
-            fr.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                fl.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            bl.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            br.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            fr.setPower(0.4);
-            fl.setPower(0.4);
-            bl.setPower(0.4);
-            br.setPower(0.4);
+            frontRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                forwardLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            backLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            backRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            frontRight.setPower(0.4);
+            forwardLeft.setPower(0.4);
+            backLeft.setPower(0.4);
+            backRight.setPower(0.4);
 
             // keep looping while we are still active, and there is time left, and both motors are running.
             // Note: We use (isBusy() && isBusy()) in the loop test, which means that when EITHER/ANY motor hits
@@ -53,7 +53,7 @@ public class EncoderTest extends DriveTrain {
             // onto the next step, use (isBusy() || isBusy()) in the loop test.
             while (opModeIsActive() &&
                     (runtime.seconds() < 10) &&
-                    (fr.isBusy() && fl.isBusy() && bl.isBusy() && br.isBusy())) {
+                    (frontRight.isBusy() && forwardLeft.isBusy() && backLeft.isBusy() && backRight.isBusy())) {
                 sleep(1);
             }
 
@@ -67,10 +67,10 @@ public class EncoderTest extends DriveTrain {
             telemetry.update();
 
             // Stop all motion;
-            fr.setPower(0);
-            fl.setPower(0);
-            bl.setPower(0);
-            br.setPower(0);
+            frontRight.setPower(0);
+            forwardLeft.setPower(0);
+            backLeft.setPower(0);
+            backRight.setPower(0);
         }
         catch (Exception exception){
             telemetry.addData("exception",exception.getStackTrace());
