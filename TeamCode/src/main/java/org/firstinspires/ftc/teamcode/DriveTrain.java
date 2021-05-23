@@ -7,7 +7,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 public class DriveTrain extends LinearOpMode {
-    protected DcMotor forwardLeft, backLeft, frontRight, backRight, launcher, conveyor;
+    protected DcMotor frontLeft, backLeft, frontRight, backRight, launcher, conveyor;
     private final ElapsedTime runtime = new ElapsedTime();
 
     public boolean isBlueAlliance() { return true; } //Set to false if red alliance
@@ -17,41 +17,38 @@ public class DriveTrain extends LinearOpMode {
     private static final double WHEEL_DIAMETER_INCHES = 4.0;     // For figuring circumference
     public static final double COUNTS_PER_INCH = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) /
             (WHEEL_DIAMETER_INCHES * 3.14);
+    private static final double conveyorDiameter = 2.5;
+    private static final double conveyorCountsPerInch = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) /
+            (conveyorDiameter * Math.PI);
 
     @Override
     public void runOpMode() { /* do nothing. */ }
 
     public void setup() {
 
-        if (isBlueAlliance()) {
-            forwardLeft = hardwareMap.dcMotor.get("Fl");
-            backLeft = hardwareMap.dcMotor.get("Bl");
-            frontRight = hardwareMap.dcMotor.get("Fr");
-            backRight = hardwareMap.dcMotor.get("Br");
-
-            forwardLeft.setDirection(DcMotor.Direction.FORWARD);
-            backLeft.setDirection(DcMotor.Direction.FORWARD);
-            frontRight.setDirection(DcMotor.Direction.REVERSE);
-            backRight.setDirection(DcMotor.Direction.REVERSE);
+        frontLeft = hardwareMap.dcMotor.get("Fl");
+        backLeft = hardwareMap.dcMotor.get("Bl");
+        frontRight = hardwareMap.dcMotor.get("Fr");
+        backRight = hardwareMap.dcMotor.get("Br");
+        conveyor = hardwareMap.dcMotor.get("conveyor");
+        launcher = hardwareMap.dcMotor.get("launcher");
 
 
-        } else { //Mirror image for red alliance
-            frontRight = hardwareMap.dcMotor.get("Fl");
-            backRight = hardwareMap.dcMotor.get("Bl");
-            forwardLeft = hardwareMap.dcMotor.get("Fr");
-            backLeft = hardwareMap.dcMotor.get("Br");
 
-            frontRight.setDirection(DcMotor.Direction.REVERSE);
-            backRight.setDirection(DcMotor.Direction.REVERSE);
-            forwardLeft.setDirection(DcMotor.Direction.FORWARD);
-            backLeft.setDirection(DcMotor.Direction.FORWARD);
-        }
+        frontLeft.setDirection(DcMotor.Direction.FORWARD);
+        backLeft.setDirection(DcMotor.Direction.FORWARD);
+        frontRight.setDirection(DcMotor.Direction.REVERSE);
+        backRight.setDirection(DcMotor.Direction.REVERSE);
 
+        frontLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        frontRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        backLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        backRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
 
 
         //Set motors to break whenever they are stopped
-        forwardLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        frontLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         backLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         frontRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         backRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -61,7 +58,7 @@ public class DriveTrain extends LinearOpMode {
 
 
     public void drive(double leftPower, double rightPower) {
-        forwardLeft.setPower(leftPower);
+        frontLeft.setPower(leftPower);
         backLeft.setPower(leftPower);
         frontRight.setPower(rightPower);
         backRight.setPower(rightPower);
@@ -87,12 +84,17 @@ public class DriveTrain extends LinearOpMode {
         int newBLTarget;
         int newBRTarget;
 
+        frontRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        frontLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        backRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        backLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
         // Ensure that the opmode is still active
         if (opModeIsActive()) {
 
             // Determine new target position, and pass to motor controller
             newFRTarget = frontRight.getCurrentPosition()     + (int) (frInches * COUNTS_PER_INCH);
-            newFLTarget = forwardLeft.getCurrentPosition()     + (int) (flInches * COUNTS_PER_INCH);
+            newFLTarget = frontLeft.getCurrentPosition()     + (int) (flInches * COUNTS_PER_INCH);
             newBLTarget = backLeft.getCurrentPosition()     + (int) (blInches * COUNTS_PER_INCH);
             newBRTarget = backRight.getCurrentPosition()     + (int) (brInches * COUNTS_PER_INCH);
 
@@ -123,24 +125,24 @@ public class DriveTrain extends LinearOpMode {
 
 
             frontRight.setTargetPosition(newFRTarget);
-            forwardLeft.setTargetPosition(newFLTarget);
+            frontLeft.setTargetPosition(newFLTarget);
             backLeft.setTargetPosition(newBLTarget);
             backRight.setTargetPosition(newBRTarget);
             // Turn On RUN_TO_POSITION
             frontRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            forwardLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            frontLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             backLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             backRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             runtime.reset();
             frontRight.setPower(Math.abs(maxPower));
-            forwardLeft.setPower(Math.abs(maxPower));
+            frontLeft.setPower(Math.abs(maxPower));
             backLeft.setPower(Math.abs(maxPower));
             backRight.setPower(Math.abs(maxPower));
 
             // Display it for the driver.
 
             telemetry.addData("fr ", frontRight.isBusy());
-            telemetry.addData("fl ", forwardLeft.isBusy());
+            telemetry.addData("fl ", frontLeft.isBusy());
             telemetry.addData("br ", backRight.isBusy());
             telemetry.addData("bl ", backLeft.isBusy());
 
@@ -153,10 +155,10 @@ public class DriveTrain extends LinearOpMode {
             // onto the next step, use (isBusy() || isBusy()) in the loop test.
             while (opModeIsActive() &&
                     (runtime.seconds() < timeoutS) &&
-                    (frontRight.isBusy() && forwardLeft.isBusy() && backLeft.isBusy() && backRight.isBusy())){
+                    (frontRight.isBusy() && frontLeft.isBusy() && backLeft.isBusy() && backRight.isBusy())){
                 // Display it for the driver.
                 telemetry.addData("fr ", frontRight.isBusy());
-                telemetry.addData("fl ", forwardLeft.isBusy());
+                telemetry.addData("fl ", frontLeft.isBusy());
                 telemetry.addData("br ", backRight.isBusy());
                 telemetry.addData("bl ", backLeft.isBusy());
 
@@ -168,13 +170,13 @@ public class DriveTrain extends LinearOpMode {
 
             // Stop all motion;
             frontRight.setPower(0);
-            forwardLeft.setPower(0);
+            frontLeft.setPower(0);
             backLeft.setPower(0);
             backRight.setPower(0);
 
             // Turn off RUN_TO_POSITION
             frontRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            forwardLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            frontLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             backLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             backRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         }
@@ -182,8 +184,30 @@ public class DriveTrain extends LinearOpMode {
 
     //this is me to the best of my ability trying to rewrite the encoderDrive above but for the launcher, bare with me here
 
+    public void conveyorDrive(double moveInches , double power) {
+        //the precise number of inches needed to be moved every time. Needs testing to approximate.
+
+        int newConveyorTarget = (int) (conveyor.getCurrentPosition() + conveyorCountsPerInch * moveInches);
+        telemetry.addData("conveyorTarget", newConveyorTarget);
+        telemetry.update();
+        conveyor.setTargetPosition(newConveyorTarget);
+        conveyor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+        runtime.reset();
+        conveyor.setPower(power);
+
+        while(opModeIsActive() && conveyor.isBusy()) {
+            sleep(10);
+        }
+
+        conveyor.setPower(0);
+        conveyor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+    }
 
 
-
+    public void setLauncherPower(double power) {
+        launcher.setPower(-power);
+    }
 
 }

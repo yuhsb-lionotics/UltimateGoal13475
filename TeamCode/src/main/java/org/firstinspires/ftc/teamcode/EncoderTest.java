@@ -27,21 +27,21 @@ public class EncoderTest extends DriveTrain {
             frontRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
             int newFRTarget = frontRight.getCurrentPosition() + (int) (30.0 * COUNTS_PER_INCH);
-            int newFLTarget = forwardLeft.getCurrentPosition() + (int) (30.0 * COUNTS_PER_INCH);
+            int newFLTarget = frontLeft.getCurrentPosition() + (int) (30.0 * COUNTS_PER_INCH);
             int newBLTarget = backLeft.getCurrentPosition() + (int) (30.0 * COUNTS_PER_INCH);
             int newBRTarget = backRight.getCurrentPosition() + (int) (30.0 * COUNTS_PER_INCH);
 
             frontRight.setTargetPosition(2000);
-            forwardLeft.setTargetPosition(2000);
+            frontLeft.setTargetPosition(2000);
             backLeft.setTargetPosition(2000);
             backRight.setTargetPosition(2000);
             runtime.reset();
             frontRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                forwardLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                frontLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             backLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             backRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             frontRight.setPower(0.4);
-            forwardLeft.setPower(0.4);
+            frontLeft.setPower(0.4);
             backLeft.setPower(0.4);
             backRight.setPower(0.4);
 
@@ -53,7 +53,7 @@ public class EncoderTest extends DriveTrain {
             // onto the next step, use (isBusy() || isBusy()) in the loop test.
             while (opModeIsActive() &&
                     (runtime.seconds() < 10) &&
-                    (frontRight.isBusy() && forwardLeft.isBusy() && backLeft.isBusy() && backRight.isBusy())) {
+                    (frontRight.isBusy() && frontLeft.isBusy() && backLeft.isBusy() && backRight.isBusy())) {
                 sleep(1);
             }
 
@@ -68,7 +68,7 @@ public class EncoderTest extends DriveTrain {
 
             // Stop all motion;
             frontRight.setPower(0);
-            forwardLeft.setPower(0);
+            frontLeft.setPower(0);
             backLeft.setPower(0);
             backRight.setPower(0);
         }
