@@ -8,9 +8,6 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 public class Auto extends DriveTrain {
 
     private final ElapsedTime runtime = new ElapsedTime();
-    private static final double conveyorDiameter = 2.5;
-    private static final double conveyorCountsPerInch = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) /
-            (conveyorDiameter * Math.PI);
 
     //Needs adjusting. Just set for preliminary testing
     static final double INCHES_FROM_GOAL = 10; //distance from starting  position to "C" wobble goal drop-off

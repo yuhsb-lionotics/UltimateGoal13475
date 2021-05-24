@@ -95,11 +95,11 @@ public class BasicOpModeLinear extends DriveTrain {
             rightPower = -0.7 * gamepad1.right_stick_y ;
 
             // Send calculated power to wheels
-            frontLeft.setPower(-leftPower);
-            backLeft.setPower(-leftPower);
-            backRight.setPower(-rightPower);
-            frontRight.setPower(-rightPower);
-            setLauncherPower(1);
+            fl.setPower(leftPower);
+            bl.setPower(leftPower);
+            br.setPower(rightPower);
+            fr.setPower(rightPower);
+            setLauncherPower(0.8);
 
             if (gamepad1.right_bumper || gamepad1.left_bumper) {
                 conveyorDrive(-25,0.9);
